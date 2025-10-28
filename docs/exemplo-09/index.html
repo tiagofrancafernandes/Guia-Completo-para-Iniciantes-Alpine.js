@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo 09 - x-transition Animações</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .exemplo {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .exemplo h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .componente {
+            background: #f0f4ff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            margin-right: 0.5rem;
+        }
+
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .animated-box {
+            background: #667eea;
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .gallery-item {
+            background: #667eea;
+            padding: 2rem;
+            border-radius: 8px;
+            color: white;
+            text-align: center;
+        }
+
+        pre {
+            background: #f0f0f0;
+            padding: 0.5rem;
+            border-radius: 3px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+
+<body x-cloak>
+    <h1>✨ Exemplo 09 - x-transition Animações</h1>
+
+    <div class="container">
+
+        <!-- Exemplo 1: x-transition simples -->
+        <div class="exemplo">
+            <h2>1. x-transition Simples</h2>
+
+            <div class="componente" x-data="{ mostrar: false }">
+                <button @click="mostrar = !mostrar">Toggle com Transição</button>
+
+                <div x-show="mostrar" x-transition class="animated-box">
+                    Transição suave padrão!
+                </div>
+
+                <div class="info">x-transition sem modificadores usa transição padrão (fade)</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 2: x-transition.opacity -->
+        <div class="exemplo">
+            <h2>2. x-transition.opacity (Fade)</h2>
+
+            <div class="componente" x-data="{ mostrar: false }">
+                <button @click="mostrar = !mostrar">Toggle Opacity</button>
+
+                <div x-show="mostrar" x-transition.opacity class="animated-box">
+                    Apenas a opacidade muda
+                </div>
+
+                <div class="info">x-transition.opacity faz fade in/out suave</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 3: x-transition.scale -->
+        <div class="exemplo">
+            <h2>3. x-transition.scale (Zoom)</h2>
+
+            <div class="componente" x-data="{ mostrar: false }">
+                <button @click="mostrar = !mostrar">Toggle Scale</button>
+
+                <div x-show="mostrar" x-transition.scale class="animated-box">
+                    Zoom in/out!
+                </div>
+
+                <div class="info">x-transition.scale faz o elemento crescer/encolher</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 4: x-transition com duração -->
+        <div class="exemplo">
+            <h2>4. x-transition com Duração Customizada</h2>
+
+            <div class="componente" x-data="{ lenta: false, rapida: false }">
+                <div style="margin-bottom: 1rem;">
+                    <button @click="lenta = !lenta">Transição Lenta (1000ms)</button>
+                    <button @click="rapida = !rapida">Transição Rápida (200ms)</button>
+                </div>
+
+                <div x-show="lenta" x-transition.duration.1000ms class="animated-box" style="background: #e0a0ff;">
+                    Transição de 1 segundo
+                </div>
+
+                <div x-show="rapida" x-transition.duration.200ms class="animated-box" style="background: #ffb0b0;">
+                    Transição de 200ms
+                </div>
+
+                <div class="info">Use x-transition.duration.Xms para customizar velocidade</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 5: x-transition com enter/leave -->
+        <div class="exemplo">
+            <h2>5. x-transition:enter e x-transition:leave</h2>
+
+            <div class="componente" x-data="{ mostrar: false }">
+                <button @click="mostrar = !mostrar">Toggle Customizado</button>
+
+                <div x-show="mostrar" x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 scale-75" x-transition:enter-end="opacity-100 scale-100"
+                    x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
+                    x-transition:leave-end="opacity-0 scale-75" class="animated-box">
+                    Transição enter/leave customizada!
+                </div>
+
+                <div class="info">
+                    enter: ao aparecer | leave: ao desaparecer<br>
+                    start: estado inicial | end: estado final
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemplo 6: Transição com múltiplos elementos -->
+        <div class="exemplo">
+            <h2>6. Transições em Múltiplos Elementos</h2>
+
+            <div class="componente" x-data="{ galeria: false }">
+                <button @click="galeria = !galeria">Mostrar/Ocultar Galeria</button>
+
+                <div x-show="galeria" class="gallery">
+                    <template x-for="i in 6" :key="i">
+                        <div x-transition :style="{ transitionDelay: (i * 100) + 'ms' }" class="gallery-item">
+                            Item <span x-text="i"></span>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="info">Use transition-delay para efeito em cascata</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 7: Notificação com transição -->
+        <div class="exemplo">
+            <h2>7. Notificação com Transição</h2>
+
+            <div class="componente" x-data="{
+                notificacao: false,
+                mostrarNotificacao() {
+                    this.notificacao = true
+                    setTimeout(() => this.notificacao = false, 3000)
+                }
+            }">
+                <button @click="mostrarNotificacao()">Mostrar Notificação</button>
+
+                <div x-show="notificacao" x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 transform translate-y-4"
+                    x-transition:enter-end="opacity-100 transform translate-y-0"
+                    x-transition:leave="transition ease-in duration-200"
+                    x-transition:leave-start="opacity-100 transform translate-y-0"
+                    x-transition:leave-end="opacity-0 transform translate-y-4"
+                    style="position: fixed; bottom: 20px; right: 20px; background: #4caf50; color: white; padding: 1rem; border-radius: 8px; min-width: 250px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);">
+                    ✅ Ação realizada com sucesso!
+                </div>
+
+                <div class="info">Notificações com entrada/saída suaves melhoram UX</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 8: Modal com transição -->
+        <div class="exemplo">
+            <h2>8. Modal com Transição</h2>
+
+            <div class="componente" x-data="{ modalAberto: false }">
+                <button @click="modalAberto = true">Abrir Modal</button>
+
+                <div x-show="modalAberto" x-transition.opacity style="position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;"
+                    @click.self="modalAberto = false">
+
+                    <div x-show="modalAberto" x-transition class="animated-box"
+                        style="position: relative; background: white; color: #333; max-width: 400px;">
+                        <h3 style="margin-bottom: 1rem;">Modal com Transição</h3>
+                        <p>Este modal aparece com uma animação suave.</p>
+
+                        <button @click="modalAberto = false" style="margin-top: 1rem; background: #667eea;">
+                            Fechar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="info">Combine transições no overlay e no conteúdo para efeito melhor</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 9: Referência rápida de modificadores -->
+        <div class="exemplo">
+            <h2>9. Modificadores x-transition (Referência Rápida)</h2>
+
+            <div class="componente">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="background: #f0f0f0;">
+                        <th style="border: 1px solid #ddd; padding: 0.5rem; text-align: left;">Modificador</th>
+                        <th style="border: 1px solid #ddd; padding: 0.5rem; text-align: left;">Efeito</th>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;"><code>x-transition</code></td>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;">Transição padrão (fade)</td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;"><code>.opacity</code></td>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;">Apenas fade (opacidade)</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;"><code>.scale</code></td>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;">Zoom in/out</td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;"><code>.duration.Xms</code></td>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;">Define duração em ms</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;"><code>:enter</code></td>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;">Customiza entrada</td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;"><code>:leave</code></td>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;">Customiza saída</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+
+</body>
+
+</html>

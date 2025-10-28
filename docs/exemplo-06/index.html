@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo 06 - x-model Binding Bidirecional</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .exemplo {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .exemplo h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #ff7eb9;
+        }
+
+        .componente {
+            background: #fff5f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #ff7eb9;
+            margin-bottom: 1rem;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #ff7eb9;
+            box-shadow: 0 0 0 3px rgba(255, 126, 185, 0.1);
+        }
+
+        label {
+            display: block;
+            margin: 1rem 0 0.5rem 0;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .display {
+            background: #ffe8f0;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            border-left: 4px solid #ff7eb9;
+        }
+
+        .info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .checkbox-group,
+        .radio-group {
+            margin: 1rem 0;
+        }
+
+        .checkbox-item,
+        .radio-item {
+            margin: 0.5rem 0;
+        }
+
+        .checkbox-item input,
+        .radio-item input {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+
+<body x-cloak>
+    <h1>🔗 Exemplo 06 - x-model Binding Bidirecional</h1>
+
+    <div class="container">
+
+        <!-- Exemplo 1: x-model com input text -->
+        <div class="exemplo">
+            <h2>1. x-model com Input Text</h2>
+
+            <div class="componente" x-data="{ nome: '' }">
+                <label>Seu nome:</label>
+                <input type="text" x-model="nome" placeholder="Digite seu nome">
+
+                <div x-show="nome" class="display">
+                    Olá, <strong x-text="nome"></strong>! 👋
+                </div>
+
+                <div class="info">x-model cria ligação bidirecional: mudança no input atualiza nome, e mudança em nome atualiza input</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 2: x-model com inputs múltiplos -->
+        <div class="exemplo">
+            <h2>2. x-model com Múltiplos Inputs</h2>
+
+            <div class="componente" x-data="{
+                email: '',
+                telefone: '',
+                mensagem: ''
+            }">
+                <label>Email:</label>
+                <input type="email" x-model="email" placeholder="seu@email.com">
+
+                <label>Telefone:</label>
+                <input type="tel" x-model="telefone" placeholder="(00) 99999-9999">
+
+                <label>Mensagem:</label>
+                <textarea x-model="mensagem" placeholder="Digite sua mensagem..." rows="4"></textarea>
+
+                <div x-show="email || telefone || mensagem" class="display">
+                    <p><strong>Email:</strong> <span x-text="email || 'Não informado'"></span></p>
+                    <p><strong>Telefone:</strong> <span x-text="telefone || 'Não informado'"></span></p>
+                    <p><strong>Mensagem:</strong> <span x-text="mensagem || 'Não informada'"></span></p>
+                </div>
+
+                <div class="info">Use x-model em qualquer tipo de input para binding automático</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 3: x-model com checkbox -->
+        <div class="exemplo">
+            <h2>3. x-model com Checkbox</h2>
+
+            <div class="componente" x-data="{ aceito: false }">
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" x-model="aceito">
+                        Aceito os termos de serviço
+                    </label>
+                </div>
+
+                <div x-show="aceito" class="display">
+                    ✅ Obrigado por aceitar nossos termos!
+                </div>
+
+                <p style="margin-top: 1rem;">Status: <strong x-text="aceito ? 'Aceito ✓' : 'Não aceito ✗'"></strong></p>
+
+                <div class="info">Checkboxes com x-model ligam a um booleano (true/false)</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 4: x-model com múltiplos checkboxes -->
+        <div class="exemplo">
+            <h2>4. x-model com Múltiplos Checkboxes (Array)</h2>
+
+            <div class="componente" x-data="{
+                interesses: [],
+                opcoes: ['JavaScript', 'Vue.js', 'Alpine.js', 'Tailwind CSS', 'Node.js']
+            }">
+                <p style="margin-bottom: 1rem;"><strong>Selecione seus interesses:</strong></p>
+                <div class="checkbox-group">
+                    <template x-for="opcao in opcoes" :key="opcao">
+                        <label class="checkbox-item">
+                            <input type="checkbox" :value="opcao" x-model="interesses">
+                            <span x-text="opcao"></span>
+                        </label>
+                    </template>
+                </div>
+
+                <div x-show="interesses.length > 0" class="display">
+                    <p><strong>Seus interesses:</strong></p>
+                    <ul>
+                        <template x-for="interesse in interesses" :key="interesse">
+                            <li x-text="interesse"></li>
+                        </template>
+                    </ul>
+                </div>
+
+                <div class="info">x-model com checkboxes múltiplos cria um array com valores selecionados</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 5: x-model com radio buttons -->
+        <div class="exemplo">
+            <h2>5. x-model com Radio Buttons</h2>
+
+            <div class="componente" x-data="{ tamanho: 'media' }">
+                <p style="margin-bottom: 1rem;"><strong>Escolha o tamanho:</strong></p>
+                <div class="radio-group">
+                    <label class="radio-item">
+                        <input type="radio" value="pequeno" x-model="tamanho">
+                        Pequeno
+                    </label>
+                    <label class="radio-item">
+                        <input type="radio" value="media" x-model="tamanho">
+                        Médio
+                    </label>
+                    <label class="radio-item">
+                        <input type="radio" value="grande" x-model="tamanho">
+                        Grande
+                    </label>
+                    <label class="radio-item">
+                        <input type="radio" value="extra" x-model="tamanho">
+                        Extra Grande
+                    </label>
+                </div>
+
+                <div class="display">
+                    <p>Tamanho selecionado: <strong x-text="tamanho.toUpperCase()"></strong></p>
+                    <p x-show="tamanho === 'pequeno'">👕 Perfeito para crianças</p>
+                    <p x-show="tamanho === 'media'">👔 Tamanho padrão</p>
+                    <p x-show="tamanho === 'grande'">🧥 Para pessoas maiores</p>
+                    <p x-show="tamanho === 'extra'">🔶 Tamanho especial</p>
+                </div>
+
+                <div class="info">Radio buttons com x-model ligam a uma variável com o valor selecionado</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 6: x-model com select -->
+        <div class="exemplo">
+            <h2>6. x-model com Select (Dropdown)</h2>
+
+            <div class="componente" x-data="{
+                pais: 'brasil',
+                cidades: {
+                    brasil: ['São Paulo', 'Rio de Janeiro', 'Belo Horizonte'],
+                    portugal: ['Lisboa', 'Porto', 'Covilhã'],
+                    espanha: ['Madrid', 'Barcelona', 'Valencia']
+                }
+            }">
+                <label>País:</label>
+                <select x-model="pais">
+                    <option value="brasil">Brasil</option>
+                    <option value="portugal">Portugal</option>
+                    <option value="espanha">Espanha</option>
+                </select>
+
+                <label style="margin-top: 1rem;">Cidades disponíveis:</label>
+                <select>
+                    <template x-for="cidade in cidades[pais]" :key="cidade">
+                        <option x-text="cidade"></option>
+                    </template>
+                </select>
+
+                <div class="display">
+                    País selecionado: <strong x-text="pais.toUpperCase()"></strong>
+                </div>
+
+                <div class="info">x-model funciona com elementos select para dropdown</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 7: x-model com modificador .number -->
+        <div class="exemplo">
+            <h2>7. x-model com Modificador .number</h2>
+
+            <div class="componente" x-data="{
+                quantidade: 1,
+                preco: 50
+            }">
+                <label>Quantidade:</label>
+                <input type="number" x-model.number="quantidade" placeholder="0">
+
+                <label>Preço Unitário:</label>
+                <input type="number" x-model.number="preco" placeholder="0">
+
+                <div class="display">
+                    <p>Quantidade: <strong x-text="quantidade"></strong> (tipo: <span x-text="typeof quantidade"></span>)</p>
+                    <p>Preço: <strong x-text="preco"></strong> (tipo: <span x-text="typeof preco"></span>)</p>
+                    <p style="font-size: 1.2rem; margin-top: 1rem;">
+                        <strong>Total: R$ <span x-text="(quantidade * preco).toFixed(2)"></span></strong>
+                    </p>
+                </div>
+
+                <div class="info">.number converte a entrada para número automaticamente</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 8: x-model com modificador .lazy -->
+        <div class="exemplo">
+            <h2>8. x-model com Modificador .lazy</h2>
+
+            <div class="componente" x-data="{
+                comment: '',
+                contador: 0,
+                aoDigitar() {
+                    this.contador++
+                }
+            }">
+                <label>Comentário (atualiza ao sair do campo):</label>
+                <textarea x-model.lazy="comment" @input="aoDigitar()" placeholder="Digite um comentário..." rows="4"></textarea>
+
+                <p style="margin-top: 1rem;">Atualizações de digitação: <strong x-text="contador"></strong></p>
+                <p>Conteúdo do x-model: <strong x-text="comment || 'Vazio'"></strong></p>
+
+                <div class="info">.lazy atualiza apenas quando o input perde foco (blur), não a cada tecla</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 9: x-model com modificador .debounce -->
+        <div class="exemplo">
+            <h2>9. x-model com Modificador .debounce</h2>
+
+            <div class="componente" x-data="{
+                busca: '',
+                resultados: [],
+                async buscar() {
+                    if (this.busca.length >= 2) {
+                        this.resultados = ['Resultado 1', 'Resultado 2', 'Resultado 3'].filter(r => r.includes(this.busca))
+                    } else {
+                        this.resultados = []
+                    }
+                }
+            }">
+                <label>Buscar (aguarda pausa na digitação):</label>
+                <input type="text" x-model.debounce.500ms="busca" @input="buscar()" placeholder="Digite para buscar...">
+
+                <div x-show="resultados.length > 0" class="display">
+                    <p><strong>Resultados encontrados:</strong></p>
+                    <ul>
+                        <template x-for="resultado in resultados" :key="resultado">
+                            <li x-text="resultado"></li>
+                        </template>
+                    </ul>
+                </div>
+
+                <div class="info">.debounce aguarda um tempo sem mudanças antes de atualizar (ótimo para buscas)</div>
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
+        ul {
+            margin-left: 2rem;
+        }
+    </style>
+
+</body>
+
+</html>

@@ -451,6 +451,18 @@ A sintaxe `@` é um atalho para `x-on:` e permite ouvir eventos do DOM.
 
 ## 4. Exemplos Práticos
 
+> 📚 **Veja os exemplos interativos no seu navegador:**
+> - [Exemplo 02: x-data e Conceitos Fundamentais](./exemplo-02/)
+> - [Exemplo 03: x-text e x-html](./exemplo-03/)
+> - [Exemplo 04: @click e Eventos](./exemplo-04/)
+> - [Exemplo 05: x-show e x-if](./exemplo-05/)
+> - [Exemplo 06: x-model Binding Bidirecional](./exemplo-06/)
+> - [Exemplo 07: x-for Iteração em Listas](./exemplo-07/)
+> - [Exemplo 08: x-bind Atributos Dinâmicos](./exemplo-08/)
+> - [Exemplo 09: x-transition Animações](./exemplo-09/)
+> - [Exemplo 10: $refs Referências a Elementos](./exemplo-10/)
+> - [Exemplo 11: Alpine.store() Estado Global](./exemplo-11/)
+
 ### Exemplo 1: Contador Simples
 
 Um contador é o "Hello World" dos frameworks reativos.

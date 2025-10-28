@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo 05 - x-show e x-if</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .exemplo {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .exemplo h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #00f2fe;
+        }
+
+        .componente {
+            background: #f0f9ff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #00f2fe;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            background: #00f2fe;
+            color: #333;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-right: 0.5rem;
+        }
+
+        button:hover {
+            background: #00d9e8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4);
+        }
+
+        .conteudo {
+            background: #e0f7ff;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            border-left: 4px solid #00f2fe;
+        }
+
+        .info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .comparison > div {
+            background: #fff;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        pre {
+            background: #f0f0f0;
+            padding: 0.5rem;
+            border-radius: 3px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+
+<body x-cloak>
+    <h1>👁️ Exemplo 05 - x-show e x-if</h1>
+
+    <div class="container">
+
+        <!-- Exemplo 1: x-show simples -->
+        <div class="exemplo">
+            <h2>1. x-show Simples</h2>
+
+            <div class="componente" x-data="{ mostrar: false }">
+                <button @click="mostrar = !mostrar">Toggle x-show</button>
+
+                <div x-show="mostrar" class="conteudo">
+                    Este conteúdo está sendo mostrado com x-show!
+                    <br>
+                    <small>(Não foi removido do DOM, apenas ocultado com CSS)</small>
+                </div>
+
+                <div class="info">x-show usa display: none quando false</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 2: x-if simples -->
+        <div class="exemplo">
+            <h2>2. x-if Simples</h2>
+
+            <div class="componente" x-data="{ existe: false }">
+                <button @click="existe = !existe">Toggle x-if</button>
+
+                <template x-if="existe">
+                    <div class="conteudo">
+                        Este conteúdo está sendo mostrado com x-if!
+                        <br>
+                        <small>(Elemento foi removido/adicionado ao DOM)</small>
+                    </div>
+                </template>
+
+                <div class="info">x-if adiciona/remove o elemento do DOM completamente</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 3: x-show com múltiplos elementos -->
+        <div class="exemplo">
+            <h2>3. x-show com Múltiplos Elementos</h2>
+
+            <div class="componente" x-data="{ aberto: false }">
+                <button @click="aberto = !aberto">
+                    <span x-text="aberto ? 'Fechar' : 'Abrir'"></span> Menu
+                </button>
+
+                <div x-show="aberto" style="margin-top: 1rem;">
+                    <div class="conteudo" style="margin-bottom: 0.5rem;">
+                        <strong>Opção 1:</strong> Algo legal
+                    </div>
+                    <div class="conteudo" style="margin-bottom: 0.5rem;">
+                        <strong>Opção 2:</strong> Outra coisa
+                    </div>
+                    <div class="conteudo">
+                        <strong>Opção 3:</strong> Mais uma opção
+                    </div>
+                </div>
+
+                <div class="info">Use x-show para elementos que alternam frequentemente</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 4: x-if com template -->
+        <div class="exemplo">
+            <h2>4. x-if com Template</h2>
+
+            <div class="componente" x-data="{ mostrarPerfil: false }">
+                <button @click="mostrarPerfil = !mostrarPerfil">
+                    <span x-text="mostrarPerfil ? 'Ocultar' : 'Mostrar'"></span> Perfil
+                </button>
+
+                <template x-if="mostrarPerfil">
+                    <div style="margin-top: 1rem;">
+                        <div class="conteudo">
+                            <h3>Perfil do Usuário</h3>
+                            <p><strong>Nome:</strong> João Silva</p>
+                            <p><strong>Email:</strong> joao@example.com</p>
+                            <p><strong>Status:</strong> Ativo ✅</p>
+                        </div>
+                    </div>
+                </template>
+
+                <div class="info">template com x-if é necessário para envolver elementos</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 5: x-show vs x-if Comparação -->
+        <div class="exemplo">
+            <h2>5. x-show vs x-if: Diferenças</h2>
+
+            <div class="componente" x-data="{ mostrar: true }">
+                <button @click="mostrar = !mostrar">
+                    <span x-text="mostrar ? 'Ocultar' : 'Mostrar'"></span> Ambos
+                </button>
+
+                <div class="comparison">
+                    <div>
+                        <h3 style="margin-bottom: 1rem;">x-show</h3>
+                        <div x-show="mostrar" style="background: #ffe0e6; padding: 1rem; border-radius: 5px;">
+                            Usando x-show
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 style="margin-bottom: 1rem;">x-if</h3>
+                        <template x-if="mostrar">
+                            <div style="background: #ffe0e6; padding: 1rem; border-radius: 5px;">
+                                Usando x-if
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <table style="width: 100%; margin-top: 1.5rem; border-collapse: collapse;">
+                    <tr style="background: #f0f0f0;">
+                        <th style="border: 1px solid #ddd; padding: 0.5rem; text-align: left;">Aspecto</th>
+                        <th style="border: 1px solid #ddd; padding: 0.5rem; text-align: left;">x-show</th>
+                        <th style="border: 1px solid #ddd; padding: 0.5rem; text-align: left;">x-if</th>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;"><strong>Método</strong></td>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;">display: none</td>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;">Remove do DOM</td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;"><strong>Performance</strong></td>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;">Melhor para toggle</td>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;">Melhor para conteúdo pesado</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;"><strong>No DOM</strong></td>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;">Sim</td>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;">Não (quando false)</td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;"><strong>Template</strong></td>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;">Não precisa</td>
+                        <td style="border: 1px solid #ddd; padding: 0.5rem;">Requer</td>
+                    </tr>
+                </table>
+
+                <div class="info">x-show para menus/toggles, x-if para conteúdo pesado ou condicional</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 6: Combinando com expressões -->
+        <div class="exemplo">
+            <h2>6. Combinando com Expressões</h2>
+
+            <div class="componente" x-data="{ idade: 0 }">
+                <label>
+                    Idade:
+                    <input type="number" x-model.number="idade" style="width: 100px;">
+                </label>
+
+                <div x-show="idade < 13" class="conteudo">
+                    👶 Criança - Conteúdo infantil
+                </div>
+
+                <div x-show="idade >= 13 && idade < 18" class="conteudo">
+                    👦 Adolescente - Conteúdo teen
+                </div>
+
+                <div x-show="idade >= 18" class="conteudo">
+                    👨 Adulto - Conteúdo para maiores
+                </div>
+
+                <div class="info">Use expressões JavaScript em x-show e x-if</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 7: Condicional múltipla -->
+        <div class="exemplo">
+            <h2>7. Múltiplos Condicionais</h2>
+
+            <div class="componente" x-data="{ nivel: 'iniciante' }">
+                <div style="margin-bottom: 1rem;">
+                    <button @click="nivel = 'iniciante'" :style="{ background: nivel === 'iniciante' ? '#00f2fe' : '#ddd' }">
+                        Iniciante
+                    </button>
+                    <button @click="nivel = 'intermediario'" :style="{ background: nivel === 'intermediario' ? '#00f2fe' : '#ddd' }">
+                        Intermediário
+                    </button>
+                    <button @click="nivel = 'avancado'" :style="{ background: nivel === 'avancado' ? '#00f2fe' : '#ddd' }">
+                        Avançado
+                    </button>
+                </div>
+
+                <div x-show="nivel === 'iniciante'" class="conteudo">
+                    📚 Você selecionou Iniciante<br>
+                    Comece com os conceitos básicos de Alpine.js
+                </div>
+
+                <div x-show="nivel === 'intermediario'" class="conteudo">
+                    🚀 Você selecionou Intermediário<br>
+                    Aprenda directives avançadas e state management
+                </div>
+
+                <div x-show="nivel === 'avancado'" class="conteudo">
+                    ⭐ Você selecionou Avançado<br>
+                    Domine componentes complexos e otimização
+                </div>
+
+                <div class="info">Use múltiplos x-show para diferentes estados</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 8: x-show com animações -->
+        <div class="exemplo">
+            <h2>8. x-show com Animações</h2>
+
+            <div class="componente" x-data="{ animado: false }">
+                <button @click="animado = !animado">Toggle com Animação</button>
+
+                <div x-show="animado" x-transition class="conteudo">
+                    <strong>Conteúdo com transição suave! ✨</strong>
+                    <p>Esta caixa aparece/desaparece com uma animação elegante.</p>
+                </div>
+
+                <div class="info">Combine x-show com x-transition para animações suaves</div>
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+
+</body>
+
+</html>

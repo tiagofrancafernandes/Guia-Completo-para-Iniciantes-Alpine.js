@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo 08 - x-bind Atributos Dinâmicos</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .exemplo {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .exemplo h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #fa709a;
+        }
+
+        .componente {
+            background: #fff5f7;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #fa709a;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            background: #fa709a;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            margin-right: 0.5rem;
+        }
+
+        button:hover {
+            background: #e85b7e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(250, 112, 154, 0.4);
+        }
+
+        input {
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #fa709a;
+            box-shadow: 0 0 0 3px rgba(250, 112, 154, 0.1);
+        }
+
+        .info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .color-box {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            margin: 1rem 0;
+            transition: all 0.3s;
+        }
+
+        .preview-box {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border: 2px dashed #fa709a;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+
+<body x-cloak>
+    <h1>🎨 Exemplo 08 - x-bind Atributos Dinâmicos</h1>
+
+    <div class="container">
+
+        <!-- Exemplo 1: x-bind com classe -->
+        <div class="exemplo">
+            <h2>1. x-bind com Classe CSS</h2>
+
+            <div class="componente" x-data="{ ativo: false }">
+                <button @click="ativo = !ativo">Toggle</button>
+
+                <div :class="{ 'ativo': ativo }" style="padding: 1rem; margin-top: 1rem; border-radius: 5px; transition: all 0.3s;"
+                    class="ativo" style="background: white; border: 2px solid #fa709a;">
+                    <span x-text="ativo ? 'ATIVO ✓' : 'INATIVO ✗'"></span>
+                </div>
+
+                <div class="info">:class com objeto: { 'classe': condicao } - classe é adicionada se condicao for true</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 2: x-bind com classes múltiplas -->
+        <div class="exemplo">
+            <h2>2. x-bind com Múltiplas Classes</h2>
+
+            <div class="componente" x-data="{ tipo: 'info' }">
+                <div style="margin-bottom: 1rem;">
+                    <button @click="tipo = 'info'" :style="{ background: tipo === 'info' ? '#fa709a' : '#ddd' }">
+                        Info
+                    </button>
+                    <button @click="tipo = 'sucesso'" :style="{ background: tipo === 'sucesso' ? '#fa709a' : '#ddd' }">
+                        Sucesso
+                    </button>
+                    <button @click="tipo = 'erro'" :style="{ background: tipo === 'erro' ? '#fa709a' : '#ddd' }">
+                        Erro
+                    </button>
+                </div>
+
+                <div :class="{
+                    'info-box': tipo === 'info',
+                    'sucesso-box': tipo === 'sucesso',
+                    'erro-box': tipo === 'erro'
+                }" style="padding: 1rem; border-radius: 5px; text-align: center;">
+                    <span x-text="tipo.toUpperCase()"></span>
+                </div>
+
+                <style scoped>
+                    .info-box { background: #e3f2fd; border-left: 4px solid #2196f3; }
+                    .sucesso-box { background: #e8f5e9; border-left: 4px solid #4caf50; }
+                    .erro-box { background: #ffebee; border-left: 4px solid #f44336; }
+                </style>
+
+                <div class="info">Múltiplas classes podem ser aplicadas condicionalmente</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 3: x-bind com src de imagem -->
+        <div class="exemplo">
+            <h2>3. x-bind com Atributos (src, href, alt)</h2>
+
+            <div class="componente" x-data="{ imagemUrl: 'https://via.placeholder.com/150' }">
+                <div>
+                    <label>URL da Imagem:</label>
+                    <input type="text" x-model="imagemUrl" placeholder="https://...">
+                </div>
+
+                <div class="preview-box">
+                    <img :src="imagemUrl" :alt="'Imagem dinâmica'">
+                </div>
+
+                <div class="info">:src, :href, :alt vinculam atributos HTML a dados reativos</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 4: x-bind com style inline -->
+        <div class="exemplo">
+            <h2>4. x-bind com Style Inline</h2>
+
+            <div class="componente" x-data="{
+                largura: 100,
+                altura: 100,
+                cor: '#fa709a'
+            }">
+                <div style="margin-bottom: 1rem;">
+                    <label>Largura (px):</label>
+                    <input type="range" x-model.number="largura" min="50" max="300">
+                    <span x-text="largura + 'px'"></span>
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label>Altura (px):</label>
+                    <input type="range" x-model.number="altura" min="50" max="300">
+                    <span x-text="altura + 'px'"></span>
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label>Cor:</label>
+                    <input type="color" x-model="cor">
+                </div>
+
+                <div :style="{
+                    width: largura + 'px',
+                    height: altura + 'px',
+                    background: cor,
+                    margin: '1rem 0'
+                }" style="border-radius: 8px; transition: all 0.3s;"></div>
+
+                <div class="info">:style com objeto: { property: valor } - propriedades CSS dinâmicas</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 5: x-bind com disabled -->
+        <div class="exemplo">
+            <h2>5. x-bind com Atributos Booleanos</h2>
+
+            <div class="componente" x-data="{
+                nome: '',
+                email: ''
+            }">
+                <div style="margin-bottom: 1rem;">
+                    <label>Nome:</label>
+                    <input type="text" x-model="nome" placeholder="Digite seu nome">
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label>Email:</label>
+                    <input type="email" x-model="email" placeholder="Digite seu email">
+                </div>
+
+                <button :disabled="!nome || !email" :style="{ opacity: (!nome || !email) ? '0.5' : '1' }">
+                    Enviar Formulário
+                </button>
+
+                <p style="margin-top: 1rem; color: #999;">
+                    Botão está <span x-text="(!nome || !email) ? 'desabilitado' : 'habilitado'"></span>
+                </p>
+
+                <div class="info">:disabled, :checked, etc. são atributos booleanos que vinculam a dados</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 6: x-bind com href -->
+        <div class="exemplo">
+            <h2>6. x-bind com href (Links Dinâmicos)</h2>
+
+            <div class="componente" x-data="{
+                sites: [
+                    { nome: 'Alpine.js', url: 'https://alpinejs.dev' },
+                    { nome: 'Vue.js', url: 'https://vuejs.org' },
+                    { nome: 'Tailwind CSS', url: 'https://tailwindcss.com' }
+                ]
+            }">
+                <p><strong>Links úteis:</strong></p>
+                <ul style="list-style: none;">
+                    <template x-for="site in sites" :key="site.url">
+                        <li style="margin-bottom: 0.5rem;">
+                            <a :href="site.url" :title="'Visitar ' + site.nome" target="_blank"
+                                style="color: #fa709a; text-decoration: none; font-weight: bold;">
+                                <span x-text="site.nome"></span> ↗️
+                            </a>
+                        </li>
+                    </template>
+                </ul>
+
+                <div class="info">:href vincula URLs dinâmicas a links</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 7: x-bind com data attributes -->
+        <div class="exemplo">
+            <h2>7. x-bind com Data Attributes</h2>
+
+            <div class="componente" x-data="{
+                userId: 123,
+                status: 'ativo'
+            }">
+                <div :data-user-id="userId" :data-status="status" style="background: #e0e0e0; padding: 1rem; border-radius: 5px;">
+                    <p>Elemento com data attributes dinâmicos</p>
+                    <small>data-user-id: <span x-text="userId"></span></small><br>
+                    <small>data-status: <span x-text="status"></span></small>
+                </div>
+
+                <div class="info">Data attributes customizados podem armazenar metadados dinâmicos</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 8: Shorthand : -->
+        <div class="exemplo">
+            <h2>8. Shorthand :bind (Atalho)</h2>
+
+            <div class="componente" x-data="{ classe: 'destaque', url: '#' }">
+                <p style="margin-bottom: 1rem;">
+                    <strong>Forma longa:</strong>
+                    <code style="background: #f0f0f0; padding: 0.25rem 0.5rem;">x-bind:class="classe"</code>
+                </p>
+
+                <p>
+                    <strong>Forma curta (recomendada):</strong>
+                    <code style="background: #f0f0f0; padding: 0.25rem 0.5rem;">:class="classe"</code>
+                </p>
+
+                <div style="margin-top: 1rem;">
+                    <div :class="classe" style="padding: 1rem; border-radius: 5px; background: #fff5f7; border-left: 4px solid #fa709a;">
+                        Exemplo usando shorthand :class
+                    </div>
+                </div>
+
+                <div class="info">Use o atalho : em vez de x-bind: para código mais limpo</div>
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+        }
+
+        ul {
+            margin-left: 2rem;
+        }
+    </style>
+
+</body>
+
+</html>

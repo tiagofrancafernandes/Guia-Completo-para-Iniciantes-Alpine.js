@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo 02 - x-data e Conceitos Fundamentais</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .exemplo {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .exemplo h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .componente {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            margin-right: 0.5rem;
+        }
+
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .display {
+            background: #e8f0fe;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+    </style>
+</head>
+
+<body x-cloak>
+    <h1>🎯 Exemplo 02 - x-data e Conceitos Fundamentais</h1>
+
+    <div class="container">
+
+        <!-- Exemplo 1: x-data simples -->
+        <div class="exemplo">
+            <h2>1. x-data Simples</h2>
+
+            <div class="componente" x-data="{ nome: 'Alpine.js', versao: 3 }">
+                <p>Framework: <strong x-text="nome"></strong></p>
+                <p>Versão: <strong x-text="versao"></strong></p>
+                <div class="info">x-data define o estado do componente</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 2: x-data com múltiplas propriedades -->
+        <div class="exemplo">
+            <h2>2. x-data com Múltiplas Propriedades</h2>
+
+            <div class="componente" x-data="{
+                usuario: 'João Silva',
+                email: 'joao@example.com',
+                ativo: true,
+                posts: 42
+            }">
+                <p><strong>Usuário:</strong> <span x-text="usuario"></span></p>
+                <p><strong>Email:</strong> <span x-text="email"></span></p>
+                <p><strong>Ativo:</strong> <span x-text="ativo ? 'Sim' : 'Não'"></span></p>
+                <p><strong>Posts:</strong> <span x-text="posts"></span></p>
+                <div class="info">Propriedades podem ser strings, números, booleans</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 3: x-data com métodos -->
+        <div class="exemplo">
+            <h2>3. x-data com Métodos</h2>
+
+            <div class="componente" x-data="{
+                contador: 0,
+                incrementar() {
+                    this.contador++
+                },
+                decrementar() {
+                    this.contador--
+                },
+                resetar() {
+                    this.contador = 0
+                }
+            }">
+                <p style="font-size: 1.5rem; font-weight: bold;">Contador: <span x-text="contador"></span></p>
+
+                <div style="margin-top: 1rem;">
+                    <button @click="decrementar()">-</button>
+                    <button @click="resetar()">Reset</button>
+                    <button @click="incrementar()">+</button>
+                </div>
+
+                <div class="info">Métodos são funções definidas no x-data que podem modificar o estado</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 4: x-data com getters computados -->
+        <div class="exemplo">
+            <h2>4. Getters Computados</h2>
+
+            <div class="componente" x-data="{
+                preco: 100,
+                desconto: 10,
+
+                get precoComDesconto() {
+                    return this.preco - (this.preco * this.desconto / 100)
+                },
+
+                get economia() {
+                    return this.preco * this.desconto / 100
+                }
+            }">
+                <p><strong>Preço Original:</strong> R$ <span x-text="preco"></span></p>
+                <p><strong>Desconto:</strong> <span x-text="desconto"></span>%</p>
+                <p style="color: #28a745; font-size: 1.1rem;">
+                    <strong>Economia:</strong> R$ <span x-text="economia.toFixed(2)"></span>
+                </p>
+                <p style="color: #667eea; font-size: 1.2rem; font-weight: bold;">
+                    <strong>Preço Final:</strong> R$ <span x-text="precoComDesconto.toFixed(2)"></span>
+                </p>
+
+                <div class="info">Getters (get) calculam valores dinâmicos sem chamar uma função</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 5: Escopo aninhado -->
+        <div class="exemplo">
+            <h2>5. Componentes Aninhados (Escopo)</h2>
+
+            <div class="componente" x-data="{ titulo: 'Componente Principal' }">
+                <h3 x-text="titulo"></h3>
+
+                <div style="background: #fff; padding: 1rem; margin-top: 1rem; border-radius: 5px;"
+                    x-data="{ subtitulo: 'Componente Aninhado' }">
+                    <p><strong>Pai:</strong> <span x-text="titulo"></span></p>
+                    <p><strong>Filho:</strong> <span x-text="subtitulo"></span></p>
+                    <div class="info">Cada x-data cria seu próprio escopo</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemplo 6: Array e objetos -->
+        <div class="exemplo">
+            <h2>6. Arrays e Objetos</h2>
+
+            <div class="componente" x-data="{
+                cores: ['Vermelho', 'Verde', 'Azul'],
+                pessoa: {
+                    nome: 'Maria',
+                    idade: 28,
+                    profissao: 'Desenvolvedora'
+                }
+            }">
+                <h3 style="margin-bottom: 1rem;">Cores:</h3>
+                <ul>
+                    <li>1ª cor: <span x-text="cores[0]"></span></li>
+                    <li>2ª cor: <span x-text="cores[1]"></span></li>
+                    <li>3ª cor: <span x-text="cores[2]"></span></li>
+                    <li>Total: <span x-text="cores.length"></span> cores</li>
+                </ul>
+
+                <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Pessoa:</h3>
+                <p><strong>Nome:</strong> <span x-text="pessoa.nome"></span></p>
+                <p><strong>Idade:</strong> <span x-text="pessoa.idade"></span> anos</p>
+                <p><strong>Profissão:</strong> <span x-text="pessoa.profissao"></span></p>
+
+                <div class="info">Acesse propriedades com notação de ponto (obj.prop) e índices com [index]</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 7: Operadores e expressões -->
+        <div class="exemplo">
+            <h2>7. Operadores e Expressões</h2>
+
+            <div class="componente" x-data="{
+                a: 10,
+                b: 5,
+                get soma() { return this.a + this.b },
+                get subtracao() { return this.a - this.b },
+                get multiplicacao() { return this.a * this.b },
+                get divisao() { return this.a / this.b },
+                get modulo() { return this.a % this.b }
+            }">
+                <p>A = <span x-text="a"></span>, B = <span x-text="b"></span></p>
+
+                <h3 style="margin-top: 1.5rem;">Operações Matemáticas:</h3>
+                <p>A + B = <strong x-text="soma"></strong></p>
+                <p>A - B = <strong x-text="subtracao"></strong></p>
+                <p>A × B = <strong x-text="multiplicacao"></strong></p>
+                <p>A ÷ B = <strong x-text="divisao"></strong></p>
+                <p>A % B = <strong x-text="modulo"></strong></p>
+
+                <div class="info">Alpine.js suporta todas as operações JavaScript padrão</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 8: Função init() -->
+        <div class="exemplo">
+            <h2>8. Função init()</h2>
+
+            <div class="componente" x-data="{
+                timestamp: null,
+                mensagem: '',
+
+                init() {
+                    this.timestamp = new Date().toLocaleTimeString('pt-BR')
+                    this.mensagem = `Página carregada em ${this.timestamp}`
+                }
+            }">
+                <p x-text="mensagem"></p>
+                <p style="font-size: 0.9rem; color: #999;">
+                    init() é executada automaticamente quando o componente é inicializado
+                </p>
+
+                <div class="info">Use init() para preparar dados iniciais ou buscar dados da API</div>
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+
+</body>
+
+</html>

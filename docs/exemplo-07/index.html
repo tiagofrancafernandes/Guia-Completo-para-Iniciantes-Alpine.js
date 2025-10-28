@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo 07 - x-for Iteração em Listas</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c0fe 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .exemplo {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .exemplo h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #a6c0fe;
+        }
+
+        .componente {
+            background: #f5f0ff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #a6c0fe;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            background: #a6c0fe;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            margin-right: 0.5rem;
+        }
+
+        button:hover {
+            background: #8aa4e0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(166, 192, 254, 0.4);
+        }
+
+        input {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #a6c0fe;
+            box-shadow: 0 0 0 3px rgba(166, 192, 254, 0.1);
+        }
+
+        ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        li {
+            background: white;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 5px;
+            border-left: 4px solid #a6c0fe;
+        }
+
+        .item-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+    </style>
+</head>
+
+<body x-cloak>
+    <h1>🔄 Exemplo 07 - x-for Iteração em Listas</h1>
+
+    <div class="container">
+
+        <!-- Exemplo 1: x-for simples -->
+        <div class="exemplo">
+            <h2>1. x-for Simples com Array</h2>
+
+            <div class="componente" x-data="{ frutas: ['Maçã', 'Banana', 'Laranja', 'Abacaxi'] }">
+                <p><strong>Frutas:</strong></p>
+                <ul>
+                    <template x-for="fruta in frutas" :key="fruta">
+                        <li x-text="fruta"></li>
+                    </template>
+                </ul>
+
+                <div class="info">x-for deve estar dentro de um &lt;template&gt; quando envolve um elemento</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 2: x-for com índice -->
+        <div class="exemplo">
+            <h2>2. x-for com Índice</h2>
+
+            <div class="componente" x-data="{ cores: ['Vermelho', 'Verde', 'Azul', 'Amarelo'] }">
+                <p><strong>Cores numeradas:</strong></p>
+                <ul>
+                    <template x-for="(cor, index) in cores" :key="index">
+                        <li>
+                            <strong x-text="index + 1"></strong>.
+                            <span x-text="cor"></span>
+                        </li>
+                    </template>
+                </ul>
+
+                <div class="info">Acesse o índice com (item, index) in array</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 3: x-for com objetos -->
+        <div class="exemplo">
+            <h2>3. x-for Iterando Objetos</h2>
+
+            <div class="componente" x-data="{
+                pessoa: {
+                    nome: 'João Silva',
+                    profissao: 'Desenvolvedor',
+                    cidade: 'São Paulo',
+                    idade: 28
+                }
+            }">
+                <p><strong>Dados da Pessoa:</strong></p>
+                <ul>
+                    <template x-for="(valor, chave) in pessoa" :key="chave">
+                        <li>
+                            <strong x-text="chave"></strong>:
+                            <span x-text="valor"></span>
+                        </li>
+                    </template>
+                </ul>
+
+                <div class="info">Use (valor, chave) para iterar sobre propriedades de um objeto</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 4: x-for com array de objetos -->
+        <div class="exemplo">
+            <h2>4. x-for com Array de Objetos</h2>
+
+            <div class="componente" x-data="{
+                produtos: [
+                    { id: 1, nome: 'Notebook', preco: 3000 },
+                    { id: 2, nome: 'Mouse', preco: 50 },
+                    { id: 3, nome: 'Teclado', preco: 150 }
+                ]
+            }">
+                <p><strong>Produtos:</strong></p>
+                <div>
+                    <template x-for="produto in produtos" :key="produto.id">
+                        <div class="item-card">
+                            <p><strong x-text="produto.nome"></strong></p>
+                            <p>Preço: R$ <span x-text="produto.preco.toFixed(2)"></span></p>
+                            <small>ID: <span x-text="produto.id"></span></small>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="info">Acesse propriedades com ponto: produto.nome, produto.preco</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 5: x-for com range numérico -->
+        <div class="exemplo">
+            <h2>5. x-for com Range Numérico</h2>
+
+            <div class="componente" x-data="{}">
+                <p><strong>Números de 1 a 10:</strong></p>
+                <ul>
+                    <template x-for="i in 10" :key="i">
+                        <li x-text="i"></li>
+                    </template>
+                </ul>
+
+                <div class="info">x-for="item in 5" cria um range de 1 a 5</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 6: x-for com adicionar/remover -->
+        <div class="exemplo">
+            <h2>6. x-for Dinâmico (Adicionar e Remover)</h2>
+
+            <div class="componente" x-data="{
+                tarefas: [
+                    { id: 1, texto: 'Aprender Alpine.js', concluida: false },
+                    { id: 2, texto: 'Criar um projeto', concluida: false }
+                ],
+                proximoId: 3,
+                novaTarefa: '',
+
+                adicionar() {
+                    if (this.novaTarefa.trim()) {
+                        this.tarefas.push({
+                            id: this.proximoId++,
+                            texto: this.novaTarefa,
+                            concluida: false
+                        })
+                        this.novaTarefa = ''
+                    }
+                },
+
+                remover(id) {
+                    this.tarefas = this.tarefas.filter(t => t.id !== id)
+                }
+            }">
+                <div style="margin-bottom: 1rem;">
+                    <input type="text" x-model="novaTarefa" placeholder="Nova tarefa..." @keyup.enter="adicionar()">
+                    <button @click="adicionar()">Adicionar</button>
+                </div>
+
+                <p><strong>Tarefas (<span x-text="tarefas.length"></span>):</strong></p>
+                <ul>
+                    <template x-for="tarefa in tarefas" :key="tarefa.id">
+                        <li style="display: flex; justify-content: space-between; align-items: center;">
+                            <span x-text="tarefa.texto"></span>
+                            <button @click="remover(tarefa.id)" style="background: #ff6b6b; padding: 0.25rem 0.75rem;">
+                                Remover
+                            </button>
+                        </li>
+                    </template>
+                </ul>
+
+                <div class="info">x-for atualiza automaticamente quando o array muda</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 7: x-for com :key correta -->
+        <div class="exemplo">
+            <h2>7. Importância do :key</h2>
+
+            <div class="componente">
+                <p style="margin-bottom: 1rem;">
+                    <strong>✅ Correto:</strong> <code style="background: #f0f0f0; padding: 0.25rem 0.5rem;">:key="item.id"</code> - Use IDs únicos
+                </p>
+                <p style="margin-bottom: 1rem;">
+                    <strong>❌ Evite:</strong> <code style="background: #f0f0f0; padding: 0.25rem 0.5rem;">:key="index"</code> - Pode causar bugs quando reordenar
+                </p>
+
+                <p style="margin-top: 1.5rem;"><strong>Exemplo com :key correta:</strong></p>
+
+                <div x-data="{
+                    usuarios: [
+                        { id: 1, nome: 'Alice' },
+                        { id: 2, nome: 'Bob' },
+                        { id: 3, nome: 'Charlie' }
+                    ]
+                }">
+                    <ul>
+                        <template x-for="usuario in usuarios" :key="usuario.id">
+                            <li>
+                                <strong x-text="usuario.id"></strong> -
+                                <span x-text="usuario.nome"></span>
+                            </li>
+                        </template>
+                    </ul>
+
+                    <div class="info">A chave :key identifica únicamente cada elemento para Alpine otimizar atualizações</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemplo 8: x-for com filtros -->
+        <div class="exemplo">
+            <h2>8. x-for com Filtros</h2>
+
+            <div class="componente" x-data="{
+                usuarios: [
+                    { id: 1, nome: 'Alice', status: 'ativo' },
+                    { id: 2, nome: 'Bob', status: 'inativo' },
+                    { id: 3, nome: 'Charlie', status: 'ativo' },
+                    { id: 4, nome: 'Diana', status: 'inativo' }
+                ],
+                filtro: 'ativo',
+
+                get usuariosFiltrados() {
+                    return this.usuarios.filter(u => u.status === this.filtro)
+                }
+            }">
+                <div style="margin-bottom: 1rem;">
+                    <button @click="filtro = 'ativo'" :style="{ background: filtro === 'ativo' ? '#a6c0fe' : '#ddd' }">
+                        Ativos
+                    </button>
+                    <button @click="filtro = 'inativo'" :style="{ background: filtro === 'inativo' ? '#a6c0fe' : '#ddd' }">
+                        Inativos
+                    </button>
+                </div>
+
+                <p><strong>Usuários <span x-text="filtro"></span>:</strong></p>
+                <ul>
+                    <template x-for="usuario in usuariosFiltrados" :key="usuario.id">
+                        <li>
+                            <span x-text="usuario.nome"></span>
+                            <small style="color: #999;" x-text="'(' + usuario.status + ')'"></small>
+                        </li>
+                    </template>
+                </ul>
+
+                <div class="info">Combine x-for com getters computados para filtros dinâmicos</div>
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+
+</body>
+
+</html>

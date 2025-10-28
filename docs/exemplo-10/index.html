@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo 10 - $refs Referências a Elementos</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .exemplo {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .exemplo h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f5576c;
+        }
+
+        .componente {
+            background: #ffe8ec;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #f5576c;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            background: #f5576c;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            margin-right: 0.5rem;
+        }
+
+        button:hover {
+            background: #e23e52;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        input {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #f5576c;
+            box-shadow: 0 0 0 3px rgba(245, 87, 108, 0.1);
+        }
+
+        .display {
+            background: #fff3f6;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            border-left: 4px solid #f5576c;
+        }
+
+        .info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .chat-box {
+            border: 2px solid #f5576c;
+            border-radius: 8px;
+            height: 200px;
+            overflow-y: auto;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: white;
+        }
+
+        .message {
+            background: #f5f5f5;
+            padding: 0.75rem;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+
+<body x-cloak>
+    <h1>🎯 Exemplo 10 - $refs Referências a Elementos</h1>
+
+    <div class="container">
+
+        <!-- Exemplo 1: $refs simples -->
+        <div class="exemplo">
+            <h2>1. $refs Simples (Focar em Input)</h2>
+
+            <div class="componente" x-data="{
+                focar() {
+                    this.$refs.meuInput.focus()
+                }
+            }">
+                <button @click="focar()">Focar no Input</button>
+                <input type="text" x-ref="meuInput" placeholder="Clique no botão para focar aqui">
+
+                <div class="info">
+                    x-ref marca um elemento, $refs.nome acessa ele<br>
+                    Útil para: focus(), blur(), seleção de texto, etc.
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemplo 2: $refs para obter valor -->
+        <div class="exemplo">
+            <h2>2. $refs para Obter Valor do Input</h2>
+
+            <div class="componente" x-data="{
+                mensagem: '',
+                obterValor() {
+                    this.mensagem = 'Valor do input: ' + this.$refs.campo.value
+                }
+            }">
+                <input type="text" x-ref="campo" placeholder="Digite algo...">
+                <button @click="obterValor()">Obter Valor</button>
+
+                <div x-show="mensagem" class="display" x-text="mensagem"></div>
+
+                <div class="info">Acesse .value para obter o valor atual do input</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 3: $refs para manipular estilo -->
+        <div class="exemplo">
+            <h2>3. $refs para Manipular Estilo</h2>
+
+            <div class="componente" x-data="{
+                destacar() {
+                    this.$refs.caixa.style.background = '#fff3f6'
+                    this.$refs.caixa.style.border = '3px solid #f5576c'
+                },
+                resetar() {
+                    this.$refs.caixa.style.background = 'white'
+                    this.$refs.caixa.style.border = '1px solid #ddd'
+                }
+            }">
+                <button @click="destacar()">Destacar</button>
+                <button @click="resetar()">Resetar</button>
+
+                <div x-ref="caixa" style="border: 1px solid #ddd; padding: 1rem; margin-top: 1rem; border-radius: 5px;">
+                    Esta caixa pode ser destacada
+                </div>
+
+                <div class="info">Use $refs.element.style para manipular CSS</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 4: $refs com x-nextTick -->
+        <div class="exemplo">
+            <h2>4. $refs com $nextTick (Scroll Automático)</h2>
+
+            <div class="componente" x-data="{
+                mensagens: ['Olá!', 'Como vai?'],
+                novaMensagem: '',
+
+                enviar() {
+                    if (this.novaMensagem.trim()) {
+                        this.mensagens.push(this.novaMensagem)
+                        this.novaMensagem = ''
+
+                        this.$nextTick(() => {
+                            this.$refs.chat.scrollTop = this.$refs.chat.scrollHeight
+                        })
+                    }
+                }
+            }">
+                <div class="chat-box" x-ref="chat">
+                    <template x-for="(msg, index) in mensagens" :key="index">
+                        <div class="message" x-text="msg"></div>
+                    </template>
+                </div>
+
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="text" x-model="novaMensagem" @keyup.enter="enviar()" placeholder="Enviar mensagem...">
+                    <button @click="enviar()">Enviar</button>
+                </div>
+
+                <div class="info">$nextTick garante que o DOM foi atualizado antes de acessar $refs</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 5: Múltiplos $refs -->
+        <div class="exemplo">
+            <h2>5. Múltiplos $refs</h2>
+
+            <div class="componente" x-data="{
+                preencherFormulario() {
+                    this.$refs.nome.value = 'João Silva'
+                    this.$refs.email.value = 'joao@example.com'
+                    this.$refs.telefone.value = '(11) 99999-9999'
+                },
+                limparFormulario() {
+                    this.$refs.nome.value = ''
+                    this.$refs.email.value = ''
+                    this.$refs.telefone.value = ''
+                }
+            }">
+                <div style="margin-bottom: 1rem;">
+                    <button @click="preencherFormulario()">Preencher Automático</button>
+                    <button @click="limparFormulario()">Limpar</button>
+                </div>
+
+                <div>
+                    <label>Nome:</label>
+                    <input type="text" x-ref="nome" placeholder="Nome">
+                </div>
+
+                <div>
+                    <label>Email:</label>
+                    <input type="email" x-ref="email" placeholder="Email">
+                </div>
+
+                <div>
+                    <label>Telefone:</label>
+                    <input type="tel" x-ref="telefone" placeholder="Telefone">
+                </div>
+
+                <div class="info">Você pode usar vários $refs no mesmo componente</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 6: $refs.elemento.classList -->
+        <div class="exemplo">
+            <h2>6. $refs para Manipular Classes</h2>
+
+            <div class="componente" x-data="{
+                adicionarClasse() {
+                    this.$refs.item.classList.add('destacado')
+                },
+                removerClasse() {
+                    this.$refs.item.classList.remove('destacado')
+                },
+                toggleClasse() {
+                    this.$refs.item.classList.toggle('destacado')
+                }
+            }" style="position: relative;">
+                <button @click="adicionarClasse()">Adicionar Classe</button>
+                <button @click="removerClasse()">Remover Classe</button>
+                <button @click="toggleClasse()">Toggle</button>
+
+                <div x-ref="item" style="padding: 1rem; margin-top: 1rem; border-radius: 5px; background: white; transition: all 0.3s;"
+                    class="highlight"></div>
+
+                <style>
+                    .highlight {
+                        background: #fff3f6 !important;
+                        border: 2px solid #f5576c !important;
+                    }
+                </style>
+
+                <div class="info">classList.add(), .remove(), .toggle() para manipular classes</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 7: $refs para verificar propriedades -->
+        <div class="exemplo">
+            <h2>7. $refs para Obter Informações do Elemento</h2>
+
+            <div class="componente" x-data="{
+                info: '',
+                obterInfo() {
+                    const el = this.$refs.elemento
+                    this.info = `
+                        Largura: ${el.offsetWidth}px |
+                        Altura: ${el.offsetHeight}px |
+                        Topo: ${el.offsetTop}px |
+                        Esquerda: ${el.offsetLeft}px
+                    `
+                }
+            }">
+                <button @click="obterInfo()">Obter Informações</button>
+
+                <div x-ref="elemento" style="background: #f5f5f5; padding: 2rem; margin-top: 1rem; border-radius: 8px; text-align: center;">
+                    Elemento para análise
+                </div>
+
+                <div x-show="info" class="display" x-text="info"></div>
+
+                <div class="info">offsetWidth, offsetHeight, offsetTop, offsetLeft retornam posição e tamanho</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 8: Acesso ao atributo data -->
+        <div class="exemplo">
+            <h2>8. $refs para Acessar Atributos Customizados</h2>
+
+            <div class="componente" x-data="{
+                resultado: '',
+                lerAtributo() {
+                    const data = this.$refs.caixa.getAttribute('data-info')
+                    this.resultado = 'Informação: ' + data
+                }
+            }">
+                <button @click="lerAtributo()">Ler Atributo</button>
+
+                <div x-ref="caixa" data-info="Este é um atributo customizado!" style="padding: 1rem; margin-top: 1rem; background: #f5f5f5; border-radius: 5px;">
+                    Elemento com atributo data-info
+                </div>
+
+                <div x-show="resultado" class="display" x-text="resultado"></div>
+
+                <div class="info">Use getAttribute() para ler atributos customizados</div>
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
+        label {
+            display: block;
+            margin-top: 0.75rem;
+            margin-bottom: 0.25rem;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            margin-bottom: 0.75rem;
+        }
+    </style>
+
+</body>
+
+</html>

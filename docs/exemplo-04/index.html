@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo 04 - @click e Eventos</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .exemplo {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .exemplo h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f5576c;
+        }
+
+        .componente {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #f5576c;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            background: #f5576c;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        button:hover {
+            background: #e23e52;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        input {
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #f5576c;
+            box-shadow: 0 0 0 3px rgba(245, 87, 108, 0.1);
+        }
+
+        .display {
+            background: #ffe8ec;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            border-left: 4px solid #f5576c;
+        }
+
+        .info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .area-hover {
+            background: #fff;
+            padding: 2rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .area-hover.active {
+            background: #ffe8ec;
+            border-color: #f5576c;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+    </style>
+</head>
+
+<body x-cloak>
+    <h1>🖱️ Exemplo 04 - @click e Eventos</h1>
+
+    <div class="container">
+
+        <!-- Exemplo 1: @click simples -->
+        <div class="exemplo">
+            <h2>1. @click Simples</h2>
+
+            <div class="componente" x-data="{ cliques: 0 }">
+                <button @click="cliques++">Clique aqui</button>
+                <p>Cliques: <strong x-text="cliques"></strong></p>
+                <div class="info">@click é acionado quando você clica no elemento</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 2: @click chamando métodos -->
+        <div class="exemplo">
+            <h2>2. @click Chamando Métodos</h2>
+
+            <div class="componente" x-data="{
+                mensagem: '',
+                saudar() {
+                    this.mensagem = 'Olá! Você clicou no botão! 👋'
+                },
+                limpar() {
+                    this.mensagem = ''
+                }
+            }">
+                <button @click="saudar()">Clique para Saudar</button>
+                <button @click="limpar()">Limpar</button>
+                <div x-show="mensagem" class="display" x-text="mensagem"></div>
+                <div class="info">Você pode chamar funções que executam lógica complexa</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 3: @click com parâmetros -->
+        <div class="exemplo">
+            <h2>3. @click Passando Parâmetros</h2>
+
+            <div class="componente" x-data="{
+                mensagem: '',
+                definirMensagem(texto, emoji) {
+                    this.mensagem = `${texto} ${emoji}`
+                }
+            }">
+                <button @click="definirMensagem('Você é legal', '😎')">Legal</button>
+                <button @click="definirMensagem('Que massa', '🚀')">Massa</button>
+                <button @click="definirMensagem('Incrível', '✨')">Incrível</button>
+                <div x-show="mensagem" class="display" x-text="mensagem"></div>
+                <div class="info">Passe argumentos diretamente na chamada do @click</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 4: @mouseenter e @mouseleave -->
+        <div class="exemplo">
+            <h2>4. @mouseenter e @mouseleave</h2>
+
+            <div class="componente" x-data="{ mouseOver: false }">
+                <div class="area-hover" :class="{ active: mouseOver }" @mouseenter="mouseOver = true"
+                    @mouseleave="mouseOver = false">
+                    <p x-show="!mouseOver">Passe o mouse aqui...</p>
+                    <p x-show="mouseOver" style="color: #f5576c; font-weight: bold;">
+                        Mouse está sobre o elemento! 🎯
+                    </p>
+                </div>
+                <div class="info">@mouseenter dispara quando o mouse entra, @mouseleave quando sai</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 5: @keyup e @keydown -->
+        <div class="exemplo">
+            <h2>5. @keyup e @keydown</h2>
+
+            <div class="componente" x-data="{
+                texto: '',
+                eventoTecla: '',
+                aoDigitar(evento) {
+                    this.eventoTecla = `Tecla digitada: ${evento.key}`
+                }
+            }">
+                <input type="text" @keyup="aoDigitar($event)" placeholder="Digite algo..."
+                    x-model="texto">
+                <p>Você digitou: <strong x-text="texto"></strong></p>
+                <p x-show="eventoTecla" class="display" x-text="eventoTecla"></p>
+                <div class="info">@keyup dispara após soltar a tecla, @keydown dispara ao pressionar</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 6: Modificadores de teclas -->
+        <div class="exemplo">
+            <h2>6. Modificadores de Teclas</h2>
+
+            <div class="componente" x-data="{ mensagem: '' }">
+                <p>Pressione ENTER para executar:</p>
+                <input type="text" @keyup.enter="mensagem = 'Você pressionou ENTER!'"
+                    placeholder="Digite e pressione Enter">
+
+                <p x-show="mensagem" class="display" x-text="mensagem"></p>
+
+                <p style="margin-top: 1.5rem;">Outros modificadores de teclado:</p>
+                <ul>
+                    <li>.enter - Tecla Enter</li>
+                    <li>.escape - Tecla Escape</li>
+                    <li>.space - Tecla de espaço</li>
+                    <li>.tab - Tecla Tab</li>
+                    <li>.delete - Delete/Backspace</li>
+                </ul>
+                <div class="info">Modificadores de teclado simplificam verificações de teclas específicas</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 7: @submit -->
+        <div class="exemplo">
+            <h2>7. @submit (Formulários)</h2>
+
+            <div class="componente" x-data="{
+                nome: '',
+                enviado: false,
+                enviarFormulario(e) {
+                    this.enviado = true
+                }
+            }">
+                <form @submit.prevent="enviarFormulario()">
+                    <input type="text" x-model="nome" placeholder="Digite seu nome" required>
+                    <button type="submit">Enviar</button>
+                </form>
+
+                <div x-show="enviado" class="display">
+                    ✅ Formulário enviado! Olá, <strong x-text="nome"></strong>!
+                </div>
+
+                <div class="info">@submit.prevent impede o comportamento padrão (reload da página)</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 8: Múltiplos eventos -->
+        <div class="exemplo">
+            <h2>8. Múltiplos Eventos no Mesmo Elemento</h2>
+
+            <div class="componente" x-data="{ status: 'Esperando...' }">
+                <button @click="status = 'Clicado!'" @mouseenter="status = 'Mouse entrou'"
+                    @mouseleave="status = 'Mouse saiu'">
+                    Teste os eventos
+                </button>
+                <p style="margin-top: 1rem;">Status: <strong x-text="status"></strong></p>
+                <div class="info">Um elemento pode ter múltiplos ouvintes de eventos</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 9: $event -->
+        <div class="exemplo">
+            <h2>9. Usando $event</h2>
+
+            <div class="componente" x-data="{ info: '' }">
+                <button @click="info = 'Botão clicado em: ' + new Date().toLocaleTimeString('pt-BR')">
+                    Clique
+                </button>
+                <input type="text" @input="info = 'Valor: ' + $event.target.value"
+                    placeholder="Digite aqui">
+                <div x-show="info" class="display" x-text="info"></div>
+                <div class="info">$event referencia o objeto do evento do DOM</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 10: Modificador .stop -->
+        <div class="exemplo">
+            <h2>10. Modificador .stop (Propagação)</h2>
+
+            <div class="componente" x-data="{ eventos: [] }">
+                <div @click="eventos.push('Clicou no div externo')"
+                    style="background: #fff; padding: 2rem; border: 2px solid #f5576c; border-radius: 8px;">
+                    <div style="background: #f5576c; color: white; padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+                        Div externo
+                    </div>
+                    <button @click.stop="eventos.push('Clicou apenas no botão')">
+                        Botão com .stop
+                    </button>
+                    <button @click="eventos.push('Clicou no botão normal')">
+                        Botão normal
+                    </button>
+                </div>
+
+                <p style="margin-top: 1rem;"><strong>Eventos capturados:</strong></p>
+                <ul>
+                    <template x-for="(evento, index) in eventos" :key="index">
+                        <li x-text="evento"></li>
+                    </template>
+                </ul>
+                <div class="info">.stop impede que o evento propague para elementos pais</div>
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
+        ul {
+            margin-left: 2rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+
+</body>
+
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo 03 - x-text e x-html</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .exemplo {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .exemplo h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .componente {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            margin-right: 0.5rem;
+        }
+
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .display {
+            background: #e8f0fe;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+
+        .warning strong {
+            color: #856404;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+    </style>
+</head>
+
+<body x-cloak>
+    <h1>📝 Exemplo 03 - x-text e x-html</h1>
+
+    <div class="container">
+
+        <!-- Exemplo 1: x-text simples -->
+        <div class="exemplo">
+            <h2>1. x-text Simples</h2>
+
+            <div class="componente" x-data="{ saudacao: 'Olá, Alpine.js!' }">
+                <p x-text="saudacao"></p>
+                <div class="info">x-text define o texto do elemento (sem HTML)</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 2: x-text com expressões -->
+        <div class="exemplo">
+            <h2>2. x-text com Expressões</h2>
+
+            <div class="componente" x-data="{
+                primeiroNome: 'João',
+                ultimoNome: 'Silva'
+            }">
+                <p>Nome Completo: <strong x-text="primeiroNome + ' ' + ultimoNome"></strong></p>
+                <p>Com template literal: <strong x-text="`${primeiroNome} ${ultimoNome}`"></strong></p>
+                <div class="info">x-text suporta qualquer expressão JavaScript</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 3: x-text com operador ternário -->
+        <div class="exemplo">
+            <h2>3. x-text com Operador Ternário</h2>
+
+            <div class="componente" x-data="{ idade: 25 }">
+                <p>Status:
+                    <span style="font-weight: bold; color: #28a745;"
+                        x-text="idade >= 18 ? 'Maior de idade' : 'Menor de idade'"></span>
+                </p>
+                <p>Categoria:
+                    <span style="font-weight: bold; color: #667eea;"
+                        x-text="idade < 12 ? 'Criança' : idade < 18 ? 'Adolescente' : 'Adulto'"></span>
+                </p>
+                <div class="info">Operador ternário: condição ? valor_verdadeiro : valor_falso</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 4: x-text com métodos -->
+        <div class="exemplo">
+            <h2>4. x-text Chamando Métodos</h2>
+
+            <div class="componente" x-data="{
+                texto: 'alpine.js',
+                maiuscula() {
+                    return this.texto.toUpperCase()
+                },
+                invertido() {
+                    return this.texto.split('').reverse().join('')
+                }
+            }">
+                <p>Original: <strong x-text="texto"></strong></p>
+                <p>Maiúscula: <strong x-text="maiuscula()"></strong></p>
+                <p>Invertido: <strong x-text="invertido()"></strong></p>
+                <div class="info">x-text pode chamar funções e usar seus retornos</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 5: x-text dinâmico -->
+        <div class="exemplo">
+            <h2>5. x-text Dinâmico (com Entrada)</h2>
+
+            <div class="componente" x-data="{ texto: 'Digite algo...' }">
+                <input type="text" x-model="texto" placeholder="Digite um texto">
+                <p style="margin-top: 1rem;">Você digitou: <strong x-text="texto"></strong></p>
+                <div class="info">x-text atualiza automaticamente quando os dados mudam</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 6: x-html simples -->
+        <div class="exemplo">
+            <h2>6. x-html Simples</h2>
+
+            <div class="componente" x-data="{ htmlContent: '<strong>Este é um texto em negrito!</strong>' }">
+                <div class="display" x-html="htmlContent"></div>
+                <div class="info">x-html renderiza conteúdo HTML (cuidado com XSS!)</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 7: x-html com múltiplos tags -->
+        <div class="exemplo">
+            <h2>7. x-html com Múltiplas Tags</h2>
+
+            <div class="componente" x-data="{
+                card: '<h3>Cartão de Exemplo</h3><p>Este é um parágrafo dentro do HTML dinâmico.</p><button style=\"background: #667eea; color: white; padding: 0.5rem 1rem; border: none; border-radius: 5px; cursor: pointer;\">Clique aqui</button>'
+            }">
+                <div class="display" x-html="card"></div>
+                <div class="info">x-html pode conter estruturas HTML complexas</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 8: Diferença entre x-text e x-html -->
+        <div class="exemplo">
+            <h2>8. Diferença: x-text vs x-html</h2>
+
+            <div class="componente" x-data="{ conteudo: '<em>Conteúdo com HTML</em>' }">
+                <h3>Usando x-text:</h3>
+                <p x-text="conteudo" style="background: #fff; padding: 0.5rem; border-radius: 5px;"></p>
+
+                <h3 style="margin-top: 1.5rem;">Usando x-html:</h3>
+                <p x-html="conteudo" style="background: #fff; padding: 0.5rem; border-radius: 5px;"></p>
+
+                <div class="info">x-text escapa HTML (mostra como texto), x-html renderiza como HTML</div>
+            </div>
+        </div>
+
+        <!-- Exemplo 9: Aviso de Segurança -->
+        <div class="exemplo">
+            <h2>9. ⚠️ Aviso de Segurança com x-html</h2>
+
+            <div class="componente">
+                <div class="warning">
+                    <strong>NUNCA use x-html com conteúdo fornecido pelo usuário!</strong><br><br>
+                    Exemplo perigoso:
+                    <pre style="background: #f0f0f0; padding: 0.5rem; margin-top: 0.5rem; border-radius: 3px; overflow-x: auto;">
+&lt;div x-html="usuarioTexto"&gt;&lt;/div&gt;</pre>
+                    Um usuário malicioso poderia injetar:
+                    <pre style="background: #f0f0f0; padding: 0.5rem; margin-top: 0.5rem; border-radius: 3px; overflow-x: auto;">
+&lt;img src=x onerror="alert('XSS')"&gt;</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemplo 10: x-html com formatação de dados -->
+        <div class="exemplo">
+            <h2>10. x-html Seguro com Dados Controlados</h2>
+
+            <div class="componente" x-data="{
+                usuario: {
+                    nome: 'Maria Silva',
+                    bio: 'Desenvolvedora Full Stack'
+                },
+                get perfilHTML() {
+                    return `
+                        <div style="background: white; padding: 1rem; border-radius: 8px; border: 2px solid #667eea;">
+                            <h4 style="margin-bottom: 0.5rem;">${this.usuario.nome}</h4>
+                            <p style="color: #666;">${this.usuario.bio}</p>
+                        </div>
+                    `
+                }
+            }">
+                <div x-html="perfilHTML"></div>
+                <div class="info">Use x-html apenas com dados que você controla</div>
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+
+</body>
+
+</html>
