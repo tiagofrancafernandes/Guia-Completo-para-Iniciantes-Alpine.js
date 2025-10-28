@@ -5,3 +5,5 @@
 ---
 
 ### [DOCS](./docs/README.md)
+
+### [Acessar o site](https://tiagofrancafernandes.github.io/Guia-Completo-para-Iniciantes-Alpine.js/)
